@@ -1,28 +1,30 @@
 const {
-    _maxHealth,
-    _plusHealthRest,
-    _fireDamage,
-    _empty,
-    _exit,
-    _diamond,
-    _fire,
-    _playerMinOnEmpty,
-    _playerMaxOnEmpty,
-    _playerMinOnFire,
-    _playerMaxOnFire,
-    _numObjects
-  }  = require('./constants') ;
+  _maxHealth,
+  _plusHealthRest,
+  _fireDamage,
+  _empty,
+  _exit,
+  _diamond,
+  _fire,
+  _playerMinOnEmpty,
+  _playerMaxOnEmpty,
+  _playerMinOnFire,
+  _playerMaxOnFire,
+  _numObjects
+}  = require('./constants');
 
 const translateHealth = (current, toWalkingToSafe = true) => {
-    if (toWalkingToSafe) {
-      if (current >= _playerMinOnEmpty && current <= _playerMaxOnEmpty)
-        return current;
-      return current - _maxHealth;
+  if (toWalkingToSafe) {
+    if (current >= _playerMinOnEmpty && current <= _playerMaxOnEmpty){
+      return current;
     }
-    if (current >= _playerMinOnEmpty && current <= _playerMaxOnEmpty)
-      return current + _maxHealth;
-    return current;
-  };
+    return current - (_maxHealth + 1);
+  }
+  if (current >= _playerMinOnEmpty && current <= _playerMaxOnEmpty){
+    return current + (_maxHealth + 1);
+  }
+  return current;
+};
 
 const canMove = val => val === _empty || val === _exit || val === _fire;
 
@@ -52,10 +54,10 @@ const find = (array, objectId, objectIdMaxRange = objectId) => {
 
 
 const padWithZeros = (n, maxValue) =>
-  `${n}`.padStart(`${maxValue}`.length, "0");
+  `${n}`.padStart(`${maxValue}`.length, '0');
 
 const getHasCode = config =>
-  config.map(current => padWithZeros(current, _numObjects)).join("");
+  config.map(current => padWithZeros(current, _numObjects)).join('');
 
 const print = config => {
   console.log(JSON.stringify(config));
@@ -63,12 +65,12 @@ const print = config => {
 
 
 module.exports = {
-    translateHealth,
-    canMove,
-    isFinalState,
-    findLivingPlayer,
-    find,
-    padWithZeros,
-    getHasCode,
-    print
+  translateHealth,
+  canMove,
+  isFinalState,
+  findLivingPlayer,
+  find,
+  padWithZeros,
+  getHasCode,
+  print
 };

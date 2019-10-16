@@ -1,125 +1,127 @@
 const {
-    _maxHealth,
-    _plusHealthRest,
-    _fireDamage,
-    _empty,
-    _exit,
-    _diamond,
-    _fire,
-    _playerMinOnEmpty,
-    _playerMaxOnEmpty,
-    _playerMinOnFire,
-    _playerMaxOnFire,
-    _numObjects
-  }  = require('./constants') ;
+  _maxHealth,
+  _plusHealthRest,
+  _fireDamage,
+  _empty,
+  _exit,
+  _diamond,
+  _fire,
+  _playerMinOnEmpty,
+  _playerMaxOnEmpty,
+  _playerMinOnFire,
+  _playerMaxOnFire,
+  _numObjects
+}  = require('./constants');
 
 const {
-    translateHealth,
-    canMove,
-    isFinalState,
-    findLivingPlayer,
-    find,
-    padWithZeros,
-    getHasCode,
-    print
+  translateHealth,
+  canMove,
+  isFinalState,
+  findLivingPlayer,
+  find,
+  padWithZeros,
+  getHasCode,
+  print
 } = require('./helpers');
 
-const _actionMoveLeft = "moveLeft";
-const _actionMoveRight = "moveRight";
-const _actionPickDiamondLeft = "pickDiamondLeft";
-const _actionPickDiamondRight = "pickDiamondRight";
-const _actionHealth = "health";
+const actionsNames = {
+  moveLeft : 'moveLeft',
+  moveRight : 'moveRight',
+  pickDiamondLeft : 'pickDiamondLeft',
+  pickDiamondRight : 'pickDiamondRight',
+  health : 'health'
+};
 
 //we assume there is only one player
 const allPossibleMoves = [
-    {
-      f: config => {
-        const { index: playerPos, value: playerValue } = findLivingPlayer(config);
-        if (playerPos > 0 && canMove(config[playerPos - 1])) {
-          const cloned = config.clone();
-          const movingToSafe =
+  {
+    f: config => {
+      const { index: playerPos, value: playerValue } = findLivingPlayer(config);
+      if (playerPos > 0 && canMove(config[playerPos - 1])) {
+        const cloned = config.clone();
+        const movingToSafe =
             cloned[playerPos - 1] === _empty || cloned[playerPos - 1] === _exit;
-          cloned[playerPos] =
+        cloned[playerPos] =
             playerValue > _playerMinOnEmpty && playerValue <= _playerMaxOnEmpty
               ? _empty
               : _fire;
-          cloned[playerPos - 1] = translateHealth(playerValue, movingToSafe);
-          return cloned;
-        }
-        return undefined;
-      },
-      name: _actionMoveLeft
+        cloned[playerPos - 1] = translateHealth(playerValue, movingToSafe);
+        return cloned;
+      }
+      return undefined;
     },
-    {
-      f: config => {
-        const { index: playerPos, value: playerValue } = findLivingPlayer(config);
-        if (
-          playerPos >= 0 &&
+    name: actionsNames.moveLeft
+  },
+  {
+    f: config => {
+      const { index: playerPos, value: playerValue } = findLivingPlayer(config);
+      if (
+        playerPos >= 0 &&
           playerPos < config.length - 1 &&
           canMove(config[playerPos + 1])
-        ) {
-          const cloned = config.clone();
-          const movingToSafe =
+      ) {
+        const cloned = config.clone();
+        const movingToSafe =
             cloned[playerPos + 1] === _empty || cloned[playerPos + 1] === _fire;
-          cloned[playerPos] =
+        cloned[playerPos] =
             playerValue > _playerMinOnEmpty && playerValue <= _playerMaxOnEmpty
               ? _empty
               : _fire;
-          cloned[playerPos + 1] = translateHealth(playerValue, movingToSafe);
-          return cloned;
-        }
-        return undefined;
-      },
-      name: _actionMoveRight
+        cloned[playerPos + 1] = translateHealth(playerValue, movingToSafe);
+        return cloned;
+      }
+      return undefined;
     },
-    {
-      f: config => {
-        const { index: playerPos } = findLivingPlayer(config);
-        if (playerPos > 0 && config[playerPos - 1] === _diamond) {
-          const cloned = config.clone();
-          cloned[playerPos - 1] = _empty;
-          return cloned;
-        }
-        return undefined;
-      },
-      name: _actionPickDiamondLeft
+    name: actionsNames.moveRight
+  },
+  {
+    f: config => {
+      const { index: playerPos } = findLivingPlayer(config);
+      if (playerPos > 0 && config[playerPos - 1] === _diamond) {
+        const cloned = config.clone();
+        cloned[playerPos - 1] = _empty;
+        return cloned;
+      }
+      return undefined;
     },
-    {
-      f: config => {
-        const { index: playerPos } = findLivingPlayer(config);
-        if (
-          playerPos >= 0 &&
+    name: actionsNames.pickDiamondLeft
+  },
+  {
+    f: config => {
+      const { index: playerPos } = findLivingPlayer(config);
+      if (
+        playerPos >= 0 &&
           playerPos < config.length - 1 &&
           config[playerPos + 1] === _diamond
-        ) {
-          const cloned = config.clone();
-          cloned[playerPos + 1] = _empty;
-          return cloned;
-        }
-        return undefined;
-      },
-      name: _actionPickDiamondRight
+      ) {
+        const cloned = config.clone();
+        cloned[playerPos + 1] = _empty;
+        return cloned;
+      }
+      return undefined;
     },
-    {
-      f: config => {
-        const { index: playerPos, value: playerValue } = findLivingPlayer(config);
-        if (
-          playerPos > 0 &&
-          (playerValue !== _playerMaxOnEmpty || playerValue !== _playerMaxOnFire)
-        ) {
-          const cloned = config.clone();
-          const inEmpty =
-            playerValue > _playerMinOnEmpty && playerValue < _playerMaxOnEmpty;
-          cloned[playerPos] = Math.min(
-            playerValue + _plusHealthRest,
-            inEmpty ? _playerMaxOnEmpty : _playerMaxOnFire
-          );
-          return cloned;
-        }
-        return undefined;
-      },
-      name: _actionHealth
-    }
-  ];
+    name: actionsNames.pickDiamondRight
+  },
+  {
+    f: config => {
+      const { index: playerPos, value: playerValue } = findLivingPlayer(config);
+      if (
+        playerPos > 0 &&
+        (playerValue !== _playerMaxOnEmpty || playerValue !== _playerMaxOnFire)
+      ) {
+        const cloned = config.clone();
+        const inEmpty =
+          playerValue > _playerMinOnEmpty && playerValue < _playerMaxOnEmpty;
+        cloned[playerPos] = Math.min(
+          playerValue + _plusHealthRest,
+          inEmpty ? _playerMaxOnEmpty : _playerMaxOnFire
+        );
+        return cloned;
+      }
+      return undefined;
+    },
+    name: actionsNames.health
+  }
+];
 
-module.exports = { allPossibleMoves };
+module.exports = { allPossibleMoves, actionsNames };

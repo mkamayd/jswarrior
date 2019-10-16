@@ -1,0 +1,21 @@
+{
+  "name": "jswarrior",
+  "version": "1.0.0",
+  "description": "turn base game",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "fix": "eslint --fix .",
+    "test": "lab -c -v --timeout 30000 --shuffle --lint -P lab"
+  },
+  "keywords": [
+    "turn",
+    "game"
+  ],
+  "author": "Miguel Gutierrez Kamayd",
+  "license": "ISC",
+  "devDependencies": {
+    "code": "^5.2.4",
+    "lab": "^18.0.2"
+  }
+}

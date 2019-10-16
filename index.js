@@ -12,7 +12,7 @@ const {
   _playerMinOnFire,
   _playerMaxOnFire,
   _numObjects
-}  = require('./constants') ;
+}  = require('./constants');
 
 const {
   translateHealth,
@@ -25,7 +25,21 @@ const {
   print
 } = require('./helpers');
 
-const {allPossibleMoves} = require('./moves');
+print({ _maxHealth,
+  _plusHealthRest,
+  _fireDamage,
+  _empty,
+  _exit,
+  _diamond,
+  _fire,
+  _playerMinOnEmpty,
+  _playerMaxOnEmpty,
+  _playerMinOnFire,
+  _playerMaxOnFire,
+  _numObjects
+} );
+
+const { allPossibleMoves, actionsNames } = require('./moves');
 
 Array.prototype.clone = function() {
   return this.slice(0);
@@ -98,32 +112,48 @@ const findSolution = initialConfig => {
 
 const drawCell = n => {
   if (n > _playerMinOnEmpty && n <= _playerMaxOnEmpty) {
-    return "👨";
+    return '👨';
   }
   if (n > _playerMinOnFire && n <= _playerMaxOnFire) {
-    return "😡";
+    return '😡';
   }
   switch (n) {
     case _empty:
-      return "🌲";
+      return '🌲';
     case _playerMinOnEmpty:
-      return "💀";
+      return '💀';
     case _playerMinOnFire:
-      return "🤬";
+      return '🤬';
     case _exit:
-      return "⛩";
+      return '⛩';
     case _diamond:
-      return "💎";
+      return '💎';
     case _fire:
-      return "🔥";
+      return '🔥';
     default:
       return `|${n}|`;
   }
 };
 
+const drawMove = a => {
+  switch (a) {
+    case actionsNames.moveLeft:
+      return '⬅️';
+    case actionsNames.moveRight:
+      return '➡️';
+    case actionsNames.pickDiamondLeft:
+      return '💎⬅️';
+    case actionsNames.pickDiamondRight:
+      return '➡️💎';
+    case actionsNames.health:
+      return '🍗';
+    default:
+      return `move: ${a}`;
+  }
+};
+
 const drawPosition = (config, move = undefined) => {
-  print(config);
-  console.log(config.map(drawCell).join("  "));
+  console.log(config.map(drawCell).join('  '));
   const { index: playerPos, value: playerValue } = findLivingPlayer(config);
   if (playerPos >= -1) {
     const toRemove =
@@ -131,30 +161,21 @@ const drawPosition = (config, move = undefined) => {
         ? _playerMinOnEmpty
         : _playerMinOnFire;
     console.log(`❤️  : ${playerValue - toRemove}`);
-    console.log(`❤️  : ${playerValue}`);
-    /*
-    4  0
-    24 20
-    25 0
-    45 20
-    */
   }
   if (move) {
-    console.log(move);
+    console.log(`move: ${drawMove(move)}`);
   }
 };
 
-const wait = () =>
+const wait = (time=1000) =>
   new Promise(resolve => {
     setTimeout(() => {
       resolve();
-    }, 2000);
+    }, time);
   });
 
-//const problem = [_exit, _empty, _empty, _diamond, _empty, _empty, _diamond, _empty, _fire, _diamond, _diamond, _playerMinOnEmpty+_maxHealth] ;
-const problem = [_exit, _fire, _playerMinOnEmpty + _maxHealth];
+const problem = [_exit, _fire, _fire, _diamond, _empty, _fire, _diamond, _fire, _fire, _diamond, _diamond, _playerMinOnEmpty+_maxHealth] ;
 const solution = findSolution(problem);
-//print(solution);
 
 const render = async solution => {
   for (let i = 0; i < solution.length; i++) {
@@ -164,7 +185,7 @@ const render = async solution => {
     drawPosition(config, moveName);
   }
   if (solution.length === 0) {
-    console.log("No solutions");
+    console.log('No solutions');
   }
 };
 
