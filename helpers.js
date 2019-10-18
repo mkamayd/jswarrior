@@ -1,5 +1,6 @@
 const {
   _maxHealth,
+  _staticEnemyMaxHealth,
   _plusHealthRest,
   _fireDamage,
   _empty,
@@ -10,6 +11,8 @@ const {
   _playerMaxOnEmpty,
   _playerMinOnFire,
   _playerMaxOnFire,
+  _staticEnemyMin,
+  _staticEnemyMax,
   _numObjects
 }  = require('./constants');
 
@@ -30,6 +33,8 @@ const canMove = val => val === _empty || val === _exit || val === _fire;
 
 //we assume there is only one exit
 const isFinalState = config => !config.includes(_exit);
+
+const isEnemy = val => val>=_staticEnemyMin && val<=_staticEnemyMax;
 
 const findLivingPlayer = array => {
   const overEmpty = find(array, _playerMinOnEmpty + 1, _playerMaxOnEmpty);
@@ -68,6 +73,7 @@ module.exports = {
   translateHealth,
   canMove,
   isFinalState,
+  isEnemy,
   findLivingPlayer,
   find,
   padWithZeros,

@@ -1,5 +1,6 @@
 const {
   _maxHealth,
+  _staticEnemyMaxHealth,
   _plusHealthRest,
   _fireDamage,
   _empty,
@@ -10,6 +11,8 @@ const {
   _playerMaxOnEmpty,
   _playerMinOnFire,
   _playerMaxOnFire,
+  _staticEnemyMin,
+  _staticEnemyMax,
   _numObjects
 }  = require('./constants');
 
@@ -17,6 +20,7 @@ const {
   translateHealth,
   canMove,
   isFinalState,
+  isEnemy,
   findLivingPlayer,
   find,
   padWithZeros,
@@ -29,7 +33,9 @@ const actionsNames = {
   moveRight : 'moveRight',
   pickDiamondLeft : 'pickDiamondLeft',
   pickDiamondRight : 'pickDiamondRight',
-  health : 'health'
+  health : 'health',
+  attackLeft : 'attackLeft',
+  attackRight : 'attackRight',
 };
 
 //we assume there is only one player
@@ -121,6 +127,34 @@ const allPossibleMoves = [
       return undefined;
     },
     name: actionsNames.health
+  },
+  {
+    f: config => {
+      const { index: playerPos } = findLivingPlayer(config);
+      if (playerPos > 0 && isEnemy(config[playerPos - 1])) {
+        const cloned = config.clone();
+        cloned[playerPos - 1] = _empty;
+        return cloned;
+      }
+      return undefined;
+    },
+    name: actionsNames.attackLeft
+  },
+  {
+    f: config => {
+      const { index: playerPos } = findLivingPlayer(config);
+      if (
+        playerPos >= 0 &&
+          playerPos < config.length - 1 &&
+          isEnemy(config[playerPos + 1])
+      ) {
+        const cloned = config.clone();
+        cloned[playerPos + 1] = _empty;
+        return cloned;
+      }
+      return undefined;
+    },
+    name: actionsNames.attackRight
   }
 ];
 

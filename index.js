@@ -1,6 +1,6 @@
-//TODO fire should harm you implement applyEnvironment(), if you walk over fire that should stay there,
 const {
   _maxHealth,
+  _staticEnemyMaxHealth,
   _plusHealthRest,
   _fireDamage,
   _empty,
@@ -11,6 +11,8 @@ const {
   _playerMaxOnEmpty,
   _playerMinOnFire,
   _playerMaxOnFire,
+  _staticEnemyMin,
+  _staticEnemyMax,
   _numObjects
 }  = require('./constants');
 
@@ -112,10 +114,13 @@ const findSolution = initialConfig => {
 
 const drawCell = n => {
   if (n > _playerMinOnEmpty && n <= _playerMaxOnEmpty) {
-    return '👨';
+    return '👨‍💼';
   }
   if (n > _playerMinOnFire && n <= _playerMaxOnFire) {
-    return '😡';
+    return '👨‍🚒';
+  }
+  if (n >= _staticEnemyMin && n <= _staticEnemyMax) {
+    return '🧟‍';
   }
   switch (n) {
     case _empty:
@@ -138,15 +143,19 @@ const drawCell = n => {
 const drawMove = a => {
   switch (a) {
     case actionsNames.moveLeft:
-      return '⬅️';
+      return '👈';
     case actionsNames.moveRight:
-      return '➡️';
+      return '👉';
     case actionsNames.pickDiamondLeft:
-      return '💎⬅️';
+      return '💎👊';
     case actionsNames.pickDiamondRight:
-      return '➡️💎';
+      return '👊💎';
     case actionsNames.health:
       return '🍗';
+    case actionsNames.attackLeft:
+      return '🤛';
+    case actionsNames.attackRight:
+      return '🤜';
     default:
       return `move: ${a}`;
   }
@@ -174,7 +183,7 @@ const wait = (time=1000) =>
     }, time);
   });
 
-const problem = [_exit, _fire, _fire, _diamond, _empty, _fire, _diamond, _fire, _fire, _diamond, _diamond, _playerMinOnEmpty+_maxHealth] ;
+const problem = [_exit, _diamond, _staticEnemyMax, _playerMinOnEmpty+_maxHealth] ;
 const solution = findSolution(problem);
 
 const render = async solution => {
