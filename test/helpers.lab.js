@@ -10,11 +10,8 @@ const test = lab.test;
 const { translateHealth } = require('../helpers');
 
 const {
-  _maxHealth,
-  _plusHealthRest,
-  _fireDamage,
-  CELL,
-  _numObjects
+  CONSTANTS,
+  CELL
 }  = require('../constants');
 
 suite('helpers', () => {

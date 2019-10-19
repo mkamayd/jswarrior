@@ -1,21 +1,16 @@
 const {
-  _maxHealth,
-  _staticEnemyMaxHealth,
-  _plusHealthRest,
-  _fireDamage,
-  CELL,
-  _numObjects
-}  = require('./constants');
+  CONSTANTS,
+  CELL}  = require('./constants');
 
 const translateHealth = (current, toWalkingToSafe = true) => {
   if (toWalkingToSafe) {
     if (current >= CELL.playerMinOnEmpty && current <= CELL.playerMaxOnEmpty){
       return current;
     }
-    return current - (_maxHealth + 1);
+    return current - (CONSTANTS.maxHealth + 1);
   }
   if (current >= CELL.playerMinOnEmpty && current <= CELL.playerMaxOnEmpty){
-    return current + (_maxHealth + 1);
+    return current + (CONSTANTS.maxHealth + 1);
   }
   return current;
 };
@@ -53,7 +48,7 @@ const padWithZeros = (n, maxValue) =>
   `${n}`.padStart(`${maxValue}`.length, '0');
 
 const getHasCode = config =>
-  config.map(current => padWithZeros(current, _numObjects)).join('');
+  config.map(current => padWithZeros(current, CONSTANTS.numObjects)).join('');
 
 const print = config => {
   console.log(JSON.stringify(config));

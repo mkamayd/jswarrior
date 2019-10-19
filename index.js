@@ -1,10 +1,6 @@
 const {
-  _maxHealth,
-  _staticEnemyMaxHealth,
-  _plusHealthRest,
-  _fireDamage,
-  CELL,
-  _numObjects
+  CONSTANTS,
+  CELL
 }  = require('./constants');
 
 const {
@@ -18,12 +14,8 @@ const {
   print
 } = require('./helpers');
 
-print({ _maxHealth,
-  _plusHealthRest,
-  _fireDamage,
-  CELL,
-  _numObjects
-} );
+print({ CONSTANTS,
+  CELL} );
 
 const { allPossibleMoves, actionsNames } = require('./moves');
 
@@ -50,7 +42,7 @@ const applyEnvironment = config => {
   const { index, value } = find(config, CELL.playerMinOnFire + 1, CELL.playerMaxOnFire);
   if (index >= 0) {
     const clone = config.clone();
-    const damage = Math.max(value - _fireDamage, CELL.playerMinOnFire);
+    const damage = Math.max(value - CONSTANTS.fireDamage, CELL.playerMinOnFire);
     if (damage === CELL.playerMinOnFire) {
       return undefined;
     }
@@ -167,7 +159,7 @@ const wait = (time=1000) =>
     }, time);
   });
 
-const problem = [CELL.exit, CELL.diamond, CELL.staticEnemyMax, CELL.playerMinOnEmpty+_maxHealth] ;
+const problem = [CELL.exit, CELL.diamond, CELL.staticEnemyMax, CELL.playerMinOnEmpty+CONSTANTS.maxHealth] ;
 const solution = findSolution(problem);
 
 const render = async solution => {

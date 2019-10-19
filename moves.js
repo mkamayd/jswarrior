@@ -1,10 +1,6 @@
 const {
-  _maxHealth,
-  _staticEnemyMaxHealth,
-  _plusHealthRest,
-  _fireDamage,
-  CELL,
-  _numObjects
+  CONSTANTS,
+  CELL
 }  = require('./constants');
 
 const {
@@ -110,7 +106,7 @@ const allPossibleMoves = [
         const inEmpty =
           playerValue > CELL.playerMinOnEmpty && playerValue < CELL.playerMaxOnEmpty;
         cloned[playerPos] = Math.min(
-          playerValue + _plusHealthRest,
+          playerValue + CONSTANTS.plusHealthRest,
           inEmpty ? CELL.playerMaxOnEmpty : CELL.playerMaxOnFire
         );
         return cloned;
