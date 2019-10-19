@@ -1,6 +1,7 @@
 const {
   CONSTANTS,
-  CELL
+  CELL,
+  HERO
 }  = require('./constants');
 
 const {
@@ -215,7 +216,7 @@ const wait = (time=1000) =>
     }
   });
 
-const problem = [CELL.playerMinOnEmpty+CONSTANTS.maxHealth, CELL.diamond, CELL.staticEnemyMax, CELL.fire, CELL.exit] ;
+const problem = [CELL.playerMinOnEmpty+HERO.maxHealth, CELL.diamond, CELL.staticEnemyMax, CELL.fire, CELL.exit] ;
 const solution = findSolution(problem);
 
 const render = async solution => {

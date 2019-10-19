@@ -1,16 +1,16 @@
 const {
   CONSTANTS,
-  CELL}  = require('./constants');
+  CELL, HERO}  = require('./constants');
 
 const translateHealth = (current, toWalkingToSafe = true) => {
   if (toWalkingToSafe) {
     if (current >= CELL.playerMinOnEmpty && current <= CELL.playerMaxOnEmpty){
       return current;
     }
-    return current - (CONSTANTS.maxHealth + 1);
+    return current - (HERO.maxHealth + 1);
   }
   if (current >= CELL.playerMinOnEmpty && current <= CELL.playerMaxOnEmpty){
-    return current + (CONSTANTS.maxHealth + 1);
+    return current + (HERO.maxHealth + 1);
   }
   return current;
 };
