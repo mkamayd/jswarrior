@@ -3,13 +3,24 @@ const CONSTANTS = {
   maxHealth: 20, //CELL.maxHealth>=0 to be always true
   staticEnemyMaxHealth: 19,//max possible health of enemy 0 is empty
   plusHealthRest: 5,//Increase in health after here rest
-  fireDamage: 1//Damage done by fire to hero
+  fireDamage: 1,//Damage done by fire to hero
+  staticEnemyDamage:5,
+  numObjects: undefined
 };
 
 
 //cells
 const CELL = {
-  empty: 0 //multiple (value 0);
+  empty: 0, //multiple (value 0);
+  exit: undefined,
+  diamond: undefined,
+  fire: undefined,
+  playerMinOnEmpty: undefined, 
+  playerMaxOnEmpty: undefined,
+  playerMinOnFire: undefined, 
+  playerMaxOnFire: undefined, 
+  staticEnemyMin: undefined,
+  staticEnemyMax: undefined,
 };
 
 CELL.exit = CELL.empty + 1; //only one (value 1)

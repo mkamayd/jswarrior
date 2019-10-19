@@ -22,6 +22,10 @@ const isFinalState = config => !config.includes(CELL.exit);
 
 const isEnemy = val => val>=CELL.staticEnemyMin && val<=CELL.staticEnemyMax;
 
+const isHeroOnFire = val => val>=CELL.playerMinOnFire && val<=CELL.playerMaxOnFire;
+
+const isHeroDead = val => val==CELL.playerMinOnFire || val===CELL.playerMinOnEmpty;
+
 const findLivingPlayer = array => {
   const overEmpty = find(array, CELL.playerMinOnEmpty + 1, CELL.playerMaxOnEmpty);
   if (overEmpty.index >= 0) {
@@ -59,6 +63,8 @@ module.exports = {
   canMove,
   isFinalState,
   isEnemy,
+  isHeroOnFire,
+  isHeroDead,
   findLivingPlayer,
   find,
   padWithZeros,
