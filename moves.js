@@ -3,16 +3,7 @@ const {
   _staticEnemyMaxHealth,
   _plusHealthRest,
   _fireDamage,
-  _empty,
-  _exit,
-  _diamond,
-  _fire,
-  _playerMinOnEmpty,
-  _playerMaxOnEmpty,
-  _playerMinOnFire,
-  _playerMaxOnFire,
-  _staticEnemyMin,
-  _staticEnemyMax,
+  CELL,
   _numObjects
 }  = require('./constants');
 
@@ -46,11 +37,11 @@ const allPossibleMoves = [
       if (playerPos > 0 && canMove(config[playerPos - 1])) {
         const cloned = config.clone();
         const movingToSafe =
-            cloned[playerPos - 1] === _empty || cloned[playerPos - 1] === _exit;
+            cloned[playerPos - 1] === CELL.empty || cloned[playerPos - 1] === CELL.exit;
         cloned[playerPos] =
-            playerValue > _playerMinOnEmpty && playerValue <= _playerMaxOnEmpty
-              ? _empty
-              : _fire;
+            playerValue > CELL.playerMinOnEmpty && playerValue <= CELL.playerMaxOnEmpty
+              ? CELL.empty
+              : CELL.fire;
         cloned[playerPos - 1] = translateHealth(playerValue, movingToSafe);
         return cloned;
       }
@@ -68,11 +59,11 @@ const allPossibleMoves = [
       ) {
         const cloned = config.clone();
         const movingToSafe =
-            cloned[playerPos + 1] === _empty || cloned[playerPos + 1] === _fire;
+            cloned[playerPos + 1] === CELL.empty || cloned[playerPos + 1] === CELL.fire;
         cloned[playerPos] =
-            playerValue > _playerMinOnEmpty && playerValue <= _playerMaxOnEmpty
-              ? _empty
-              : _fire;
+            playerValue > CELL.playerMinOnEmpty && playerValue <= CELL.playerMaxOnEmpty
+              ? CELL.empty
+              : CELL.fire;
         cloned[playerPos + 1] = translateHealth(playerValue, movingToSafe);
         return cloned;
       }
@@ -83,9 +74,9 @@ const allPossibleMoves = [
   {
     f: config => {
       const { index: playerPos } = findLivingPlayer(config);
-      if (playerPos > 0 && config[playerPos - 1] === _diamond) {
+      if (playerPos > 0 && config[playerPos - 1] === CELL.diamond) {
         const cloned = config.clone();
-        cloned[playerPos - 1] = _empty;
+        cloned[playerPos - 1] = CELL.empty;
         return cloned;
       }
       return undefined;
@@ -98,10 +89,10 @@ const allPossibleMoves = [
       if (
         playerPos >= 0 &&
           playerPos < config.length - 1 &&
-          config[playerPos + 1] === _diamond
+          config[playerPos + 1] === CELL.diamond
       ) {
         const cloned = config.clone();
-        cloned[playerPos + 1] = _empty;
+        cloned[playerPos + 1] = CELL.empty;
         return cloned;
       }
       return undefined;
@@ -113,14 +104,14 @@ const allPossibleMoves = [
       const { index: playerPos, value: playerValue } = findLivingPlayer(config);
       if (
         playerPos > 0 &&
-        (playerValue !== _playerMaxOnEmpty || playerValue !== _playerMaxOnFire)
+        (playerValue !== CELL.playerMaxOnEmpty || playerValue !== CELL.playerMaxOnFire)
       ) {
         const cloned = config.clone();
         const inEmpty =
-          playerValue > _playerMinOnEmpty && playerValue < _playerMaxOnEmpty;
+          playerValue > CELL.playerMinOnEmpty && playerValue < CELL.playerMaxOnEmpty;
         cloned[playerPos] = Math.min(
           playerValue + _plusHealthRest,
-          inEmpty ? _playerMaxOnEmpty : _playerMaxOnFire
+          inEmpty ? CELL.playerMaxOnEmpty : CELL.playerMaxOnFire
         );
         return cloned;
       }
@@ -133,7 +124,7 @@ const allPossibleMoves = [
       const { index: playerPos } = findLivingPlayer(config);
       if (playerPos > 0 && isEnemy(config[playerPos - 1])) {
         const cloned = config.clone();
-        cloned[playerPos - 1] = _empty;
+        cloned[playerPos - 1] = CELL.empty;
         return cloned;
       }
       return undefined;
@@ -149,7 +140,7 @@ const allPossibleMoves = [
           isEnemy(config[playerPos + 1])
       ) {
         const cloned = config.clone();
-        cloned[playerPos + 1] = _empty;
+        cloned[playerPos + 1] = CELL.empty;
         return cloned;
       }
       return undefined;

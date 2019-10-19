@@ -13,28 +13,21 @@ const {
   _maxHealth,
   _plusHealthRest,
   _fireDamage,
-  _empty,
-  _exit,
-  _diamond,
-  _fire,
-  _playerMinOnEmpty,
-  _playerMaxOnEmpty,
-  _playerMinOnFire,
-  _playerMaxOnFire,
+  CELL,
   _numObjects
 }  = require('../constants');
 
 suite('helpers', () => {
-  test('translateHealth(_playerMinOnEmpty,true)', () => {
-    expect(translateHealth(_playerMinOnEmpty,true)).to.equal(_playerMinOnEmpty);
+  test('translateHealth(CELL.playerMinOnEmpty,true)', () => {
+    expect(translateHealth(CELL.playerMinOnEmpty,true)).to.equal(CELL.playerMinOnEmpty);
   });
-  test('translateHealth(_playerMinOnFire,true)', () => {
-    expect(translateHealth(_playerMinOnFire,true)).to.equal(_playerMinOnEmpty);
+  test('translateHealth(CELL.playerMinOnFire,true)', () => {
+    expect(translateHealth(CELL.playerMinOnFire,true)).to.equal(CELL.playerMinOnEmpty);
   });
-  test('translateHealth(_playerMinOnEmpty,false)', () => {
-    expect(translateHealth(_playerMinOnEmpty,false)).to.equal(_playerMinOnFire);
+  test('translateHealth(CELL.playerMinOnEmpty,false)', () => {
+    expect(translateHealth(CELL.playerMinOnEmpty,false)).to.equal(CELL.playerMinOnFire);
   });
-  test('translateHealth(_playerMinOnFire,false)', () => {
-    expect(translateHealth(_playerMinOnFire,false)).to.equal(_playerMinOnFire);
+  test('translateHealth(CELL.playerMinOnFire,false)', () => {
+    expect(translateHealth(CELL.playerMinOnFire,false)).to.equal(CELL.playerMinOnFire);
   });
 });

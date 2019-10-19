@@ -3,16 +3,7 @@ const {
   _staticEnemyMaxHealth,
   _plusHealthRest,
   _fireDamage,
-  _empty,
-  _exit,
-  _diamond,
-  _fire,
-  _playerMinOnEmpty,
-  _playerMaxOnEmpty,
-  _playerMinOnFire,
-  _playerMaxOnFire,
-  _staticEnemyMin,
-  _staticEnemyMax,
+  CELL,
   _numObjects
 }  = require('./constants');
 
@@ -30,14 +21,7 @@ const {
 print({ _maxHealth,
   _plusHealthRest,
   _fireDamage,
-  _empty,
-  _exit,
-  _diamond,
-  _fire,
-  _playerMinOnEmpty,
-  _playerMaxOnEmpty,
-  _playerMinOnFire,
-  _playerMaxOnFire,
+  CELL,
   _numObjects
 } );
 
@@ -63,11 +47,11 @@ const getHistory = (backMap, winnerConfig) => {
 };
 
 const applyEnvironment = config => {
-  const { index, value } = find(config, _playerMinOnFire + 1, _playerMaxOnFire);
+  const { index, value } = find(config, CELL.playerMinOnFire + 1, CELL.playerMaxOnFire);
   if (index >= 0) {
     const clone = config.clone();
-    const damage = Math.max(value - _fireDamage, _playerMinOnFire);
-    if (damage === _playerMinOnFire) {
+    const damage = Math.max(value - _fireDamage, CELL.playerMinOnFire);
+    if (damage === CELL.playerMinOnFire) {
       return undefined;
     }
     clone[index] = damage;
@@ -113,27 +97,27 @@ const findSolution = initialConfig => {
 };
 
 const drawCell = n => {
-  if (n > _playerMinOnEmpty && n <= _playerMaxOnEmpty) {
+  if (n > CELL.playerMinOnEmpty && n <= CELL.playerMaxOnEmpty) {
     return '👨‍💼';
   }
-  if (n > _playerMinOnFire && n <= _playerMaxOnFire) {
+  if (n > CELL.playerMinOnFire && n <= CELL.playerMaxOnFire) {
     return '👨‍🚒';
   }
-  if (n >= _staticEnemyMin && n <= _staticEnemyMax) {
+  if (n >= CELL.staticEnemyMin && n <= CELL.staticEnemyMax) {
     return '🧟‍';
   }
   switch (n) {
-    case _empty:
+    case CELL.empty:
       return '🌲';
-    case _playerMinOnEmpty:
+    case CELL.playerMinOnEmpty:
       return '💀';
-    case _playerMinOnFire:
+    case CELL.playerMinOnFire:
       return '🤬';
-    case _exit:
+    case CELL.exit:
       return '⛩';
-    case _diamond:
+    case CELL.diamond:
       return '💎';
-    case _fire:
+    case CELL.fire:
       return '🔥';
     default:
       return `|${n}|`;
@@ -166,9 +150,9 @@ const drawPosition = (config, move = undefined) => {
   const { index: playerPos, value: playerValue } = findLivingPlayer(config);
   if (playerPos >= -1) {
     const toRemove =
-      playerValue >= _playerMinOnEmpty && playerValue <= _playerMaxOnEmpty
-        ? _playerMinOnEmpty
-        : _playerMinOnFire;
+      playerValue >= CELL.playerMinOnEmpty && playerValue <= CELL.playerMaxOnEmpty
+        ? CELL.playerMinOnEmpty
+        : CELL.playerMinOnFire;
     console.log(`❤️  : ${playerValue - toRemove}`);
   }
   if (move) {
@@ -183,7 +167,7 @@ const wait = (time=1000) =>
     }, time);
   });
 
-const problem = [_exit, _diamond, _staticEnemyMax, _playerMinOnEmpty+_maxHealth] ;
+const problem = [CELL.exit, CELL.diamond, CELL.staticEnemyMax, CELL.playerMinOnEmpty+_maxHealth] ;
 const solution = findSolution(problem);
 
 const render = async solution => {

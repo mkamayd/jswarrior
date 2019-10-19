@@ -3,45 +3,36 @@ const {
   _staticEnemyMaxHealth,
   _plusHealthRest,
   _fireDamage,
-  _empty,
-  _exit,
-  _diamond,
-  _fire,
-  _playerMinOnEmpty,
-  _playerMaxOnEmpty,
-  _playerMinOnFire,
-  _playerMaxOnFire,
-  _staticEnemyMin,
-  _staticEnemyMax,
+  CELL,
   _numObjects
 }  = require('./constants');
 
 const translateHealth = (current, toWalkingToSafe = true) => {
   if (toWalkingToSafe) {
-    if (current >= _playerMinOnEmpty && current <= _playerMaxOnEmpty){
+    if (current >= CELL.playerMinOnEmpty && current <= CELL.playerMaxOnEmpty){
       return current;
     }
     return current - (_maxHealth + 1);
   }
-  if (current >= _playerMinOnEmpty && current <= _playerMaxOnEmpty){
+  if (current >= CELL.playerMinOnEmpty && current <= CELL.playerMaxOnEmpty){
     return current + (_maxHealth + 1);
   }
   return current;
 };
 
-const canMove = val => val === _empty || val === _exit || val === _fire;
+const canMove = val => val === CELL.empty || val === CELL.exit || val === CELL.fire;
 
 //we assume there is only one exit
-const isFinalState = config => !config.includes(_exit);
+const isFinalState = config => !config.includes(CELL.exit);
 
-const isEnemy = val => val>=_staticEnemyMin && val<=_staticEnemyMax;
+const isEnemy = val => val>=CELL.staticEnemyMin && val<=CELL.staticEnemyMax;
 
 const findLivingPlayer = array => {
-  const overEmpty = find(array, _playerMinOnEmpty + 1, _playerMaxOnEmpty);
+  const overEmpty = find(array, CELL.playerMinOnEmpty + 1, CELL.playerMaxOnEmpty);
   if (overEmpty.index >= 0) {
     return overEmpty;
   }
-  return find(array, _playerMinOnFire + 1, _playerMaxOnFire);
+  return find(array, CELL.playerMinOnFire + 1, CELL.playerMaxOnFire);
 };
 
 const find = (array, objectId, objectIdMaxRange = objectId) => {
