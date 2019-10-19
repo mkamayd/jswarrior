@@ -70,10 +70,25 @@ const applyStaticEnemyOnLeftDamage = config =>{
   return config;
 }
 
+const applyStaticEnemyOnRightDamage = config =>{
+  const { index, value } = findLivingPlayer(config);
+  if (index >= 0  && index + 1 < config.length && isEnemy(config[index+1])) {
+    const damage = Math.max(value - CONSTANTS.staticEnemyDamage, isHeroOnFire(value)?CELL.playerMinOnFire:CELL.playerMinOnEmpty);
+    if(isHeroDead(damage))
+    {
+      return undefined;
+    }
+    const clone = config.clone();
+    clone[index] = damage;
+    return clone;
+  }
+  return config;
+}
+
 const applyEnvironment = config => {
   if(config)
   {
-    const damagesFunctions = [applyFireDamage, applyStaticEnemyOnLeftDamage];
+    const damagesFunctions = [applyFireDamage, applyStaticEnemyOnLeftDamage, applyStaticEnemyOnRightDamage];
     let currentConfig = config.clone();
     for(let i=0; i<damagesFunctions.length; i++)
     {
@@ -200,7 +215,7 @@ const wait = (time=1000) =>
     }
   });
 
-const problem = [CELL.exit, CELL.diamond, CELL.staticEnemyMax, CELL.fire, CELL.playerMinOnEmpty+CONSTANTS.maxHealth] ;
+const problem = [CELL.playerMinOnEmpty+CONSTANTS.maxHealth, CELL.diamond, CELL.staticEnemyMax, CELL.fire, CELL.exit] ;
 const solution = findSolution(problem);
 
 const render = async solution => {
