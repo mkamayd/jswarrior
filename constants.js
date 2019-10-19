@@ -1,9 +1,9 @@
 //world data
 const CONSTANTS = {
   maxHealth: 20, //CELL.maxHealth>=0 to be always true
-  staticEnemyMaxHealth: 19,
-  plusHealthRest: 5,
-  fireDamage: 1
+  staticEnemyMaxHealth: 19,//max possible health of enemy 0 is empty
+  plusHealthRest: 5,//Increase in health after here rest
+  fireDamage: 1//Damage done by fire to hero
 };
 
 

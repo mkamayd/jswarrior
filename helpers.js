@@ -43,7 +43,6 @@ const find = (array, objectId, objectIdMaxRange = objectId) => {
   return { index, value };
 };
 
-
 const padWithZeros = (n, maxValue) =>
   `${n}`.padStart(`${maxValue}`.length, '0');
 
