@@ -154,17 +154,22 @@ const drawPosition = (config, move = undefined) => {
 
 const wait = (time=1000) =>
   new Promise(resolve => {
-    setTimeout(() => {
+    if(time<=0){
       resolve();
-    }, time);
+    }
+    else{
+      setTimeout(() => {
+        resolve();
+      }, time);
+    }
   });
 
-const problem = [CELL.exit, CELL.diamond, CELL.staticEnemyMax, CELL.playerMinOnEmpty+CONSTANTS.maxHealth] ;
+const problem = [CELL.exit, CELL.diamond, CELL.staticEnemyMax, CELL.empty, CELL.playerMinOnEmpty+CONSTANTS.maxHealth] ;
 const solution = findSolution(problem);
 
 const render = async solution => {
   for (let i = 0; i < solution.length; i++) {
-    await wait();
+    await wait(0);
     //console.clear();
     const { config, moveName } = solution[i];
     drawPosition(config, moveName);
