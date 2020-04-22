@@ -3,7 +3,7 @@ const CONSTANTS = {
   staticEnemyMaxHealth: 19,//max possible health of enemy 0 is empty
   plusHealthRest: 5,//Increase in health after here rest
   fireDamage: 1,//Damage done by fire to hero
-  staticEnemyDamage:5,
+  staticEnemyDamage: 5,
   numObjects: undefined
 };
 
@@ -22,7 +22,7 @@ const CELL = {
   playerMinOnFire: undefined, 
   playerMaxOnFire: undefined, 
   staticEnemyMin: undefined,
-  staticEnemyMax: undefined,
+  staticEnemyMax: undefined
 };
 
 CELL.exit = CELL.empty + 1; //only one (value 1)
